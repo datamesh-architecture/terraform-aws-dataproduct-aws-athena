@@ -1,0 +1,10 @@
+type: object
+properties:
+  location:
+    type: string
+  available:
+    type: integer
+  updated_at:
+    type: string
+  sku:
+    type: string
