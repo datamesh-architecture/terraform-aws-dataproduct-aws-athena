@@ -1,0 +1,28 @@
+import boto3
+
+with open('${name}.sql', 'r') as file:
+    query = file.read()
+
+# Database to execute the query against
+DATABASE = '${database}'
+
+# Output location for query results
+output='${queryresults}'
+
+def lambda_handler(event, context):
+    # Initiate the Boto3 Client
+    client = boto3.client('athena')
+
+    # Start the query execution
+    response = client.start_query_execution(
+        QueryString=query,
+        QueryExecutionContext={
+            'Database': DATABASE
+        },
+        ResultConfiguration={
+            'OutputLocation': output
+        }
+    )
+
+    # Return response after starting the query execution
+    return response
