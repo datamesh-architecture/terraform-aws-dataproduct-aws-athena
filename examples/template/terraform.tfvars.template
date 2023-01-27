@@ -1,0 +1,10 @@
+aws = {
+  region = "REGION"
+  access_key = "ACCESS_KEY"
+  secret_key = "SECRET_KEY"
+}
+
+confluent = {
+  cloud_api_key    = "CLOUT_API_KEY"    # optionally use CONFLUENT_CLOUD_API_KEY env var
+  cloud_api_secret = "CLOUD_API_SECRET" # optionally use CONFLUENT_CLOUD_API_SECRET env var
+}

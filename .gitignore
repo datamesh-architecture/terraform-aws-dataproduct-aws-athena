@@ -30,4 +30,5 @@ override.tf.json
 # example: *tfplan*
 
 .idea
+examples/**/terraform.tfvars
 output

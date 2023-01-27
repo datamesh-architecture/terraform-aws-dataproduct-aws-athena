@@ -1,38 +1,30 @@
-
+module "kafka_cluster" {
+  source = "./kafka_cluster"
+}
 
 module "ladenhueter" {
-  source = "../../" # Will be GitHub URL or registry in the future
-  version = "0.0.1" # Version of the source we're using
+  source = "../.."
 
-  name = "ladenhueter"
-  domain = "fulfillment"
-
-  schedule = {
-    cron = "0 1 * * *" # Execute every day at 1 A.M.
+  product = {
+    domain    = "fulfillment",
+    name      = "shelf_warmers",
+    schedule  = "0 0 * * ? *", # Run at 00:00 am (UTC) every day
+    input     = {
+      topic     = "stock_updated",
+      schema    = "data/stock_updated.schema.json"
+    }
+    transform = {
+      name      = "find_shelf_warmers",
+      query     = "data/find_shelf_warmers.sql"
+    },
+    output    = {
+      format    = "PARQUET",
+      location  = "shelf_warmers"
+    }
   }
 
-  input = {
-    s3_location = "s3://example-com-kafka-connect-stock/topics/stock/"
-    format = "JSON"
-    schema = "stock_updated_schema.yaml"
-  }
-
-  # Create lambda
-  transformation = {
-    query = "transform.sql"
-  }
-
-  output = {
-    format = "PARQUET"
-    data = "s3://example-com-dataproducts-fulfillment-ladenhueter/output/data/"
-    schema = "s3://example-com-dataproducts-fulfillment-ladenhueter/output/schema.yaml"
-    allowed_roles = ["team_coo_support"]
-  }
+  aws                   = var.aws
+  kafka_api_credentials = module.kafka_cluster.kafka_api_credentials
+  kafka_cluster         = module.kafka_cluster.kafka_cluster
 }
 
-module "topic_stock_to_s3" {
-  source = "./modules/kafka_connect_topic_to_s3"
-
-  topic = "stock"
-  s3_bucket_name = "s3://example-com-kafka-connect-stock"
-}
