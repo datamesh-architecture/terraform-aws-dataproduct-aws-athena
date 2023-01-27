@@ -28,7 +28,7 @@ module "kafka_sink" {
   aws                   = var.aws
 
   kafka_api_credentials = var.kafka_api_credentials
-  kafka_cluster         = var.kafka_cluster
+  kafka                 = var.kafka
   kafka_app_name        = local.product_fqn
   kafka_topics          = [ var.product.input.topic ]
 

@@ -4,10 +4,10 @@ resource "confluent_service_account" "app-connector" {
 
 resource "confluent_connector" "sink" {
   environment {
-    id = "env-yozz86"
+    id = var.kafka.environment.id
   }
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
 
   // Block for custom *sensitive* configuration properties that are labelled with "Type: password" under "Configuration Properties" section in the docs:
@@ -51,7 +51,7 @@ resource "confluent_connector" "sink" {
 
 resource "confluent_kafka_acl" "app-connector-describe-on-cluster" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "CLUSTER"
   resource_name = "kafka-cluster"
@@ -60,7 +60,7 @@ resource "confluent_kafka_acl" "app-connector-describe-on-cluster" {
   host          = "*"
   operation     = "DESCRIBE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -69,7 +69,7 @@ resource "confluent_kafka_acl" "app-connector-describe-on-cluster" {
 
 resource "confluent_kafka_acl" "app-connector-read-on-target-topic" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "${var.kafka_app_name}-reader"
@@ -78,7 +78,7 @@ resource "confluent_kafka_acl" "app-connector-read-on-target-topic" {
   host          = "*"
   operation     = "READ"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -87,7 +87,7 @@ resource "confluent_kafka_acl" "app-connector-read-on-target-topic" {
 
 resource "confluent_kafka_acl" "app-connector-create-on-dlq-lcc-topics" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "dlq-lcc"
@@ -96,7 +96,7 @@ resource "confluent_kafka_acl" "app-connector-create-on-dlq-lcc-topics" {
   host          = "*"
   operation     = "CREATE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -105,7 +105,7 @@ resource "confluent_kafka_acl" "app-connector-create-on-dlq-lcc-topics" {
 
 resource "confluent_kafka_acl" "app-connector-write-on-dlq-lcc-topics" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "dlq-lcc"
@@ -114,7 +114,7 @@ resource "confluent_kafka_acl" "app-connector-write-on-dlq-lcc-topics" {
   host          = "*"
   operation     = "WRITE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -123,7 +123,7 @@ resource "confluent_kafka_acl" "app-connector-write-on-dlq-lcc-topics" {
 
 resource "confluent_kafka_acl" "app-connector-create-on-success-lcc-topics" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "success-lcc"
@@ -132,7 +132,7 @@ resource "confluent_kafka_acl" "app-connector-create-on-success-lcc-topics" {
   host          = "*"
   operation     = "CREATE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -141,7 +141,7 @@ resource "confluent_kafka_acl" "app-connector-create-on-success-lcc-topics" {
 
 resource "confluent_kafka_acl" "app-connector-write-on-success-lcc-topics" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "success-lcc"
@@ -150,7 +150,7 @@ resource "confluent_kafka_acl" "app-connector-write-on-success-lcc-topics" {
   host          = "*"
   operation     = "WRITE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -159,7 +159,7 @@ resource "confluent_kafka_acl" "app-connector-write-on-success-lcc-topics" {
 
 resource "confluent_kafka_acl" "app-connector-create-on-error-lcc-topics" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "error-lcc"
@@ -168,7 +168,7 @@ resource "confluent_kafka_acl" "app-connector-create-on-error-lcc-topics" {
   host          = "*"
   operation     = "CREATE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -177,7 +177,7 @@ resource "confluent_kafka_acl" "app-connector-create-on-error-lcc-topics" {
 
 resource "confluent_kafka_acl" "app-connector-write-on-error-lcc-topics" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
   resource_name = "error-lcc"
@@ -186,7 +186,7 @@ resource "confluent_kafka_acl" "app-connector-write-on-error-lcc-topics" {
   host          = "*"
   operation     = "WRITE"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret
@@ -195,7 +195,7 @@ resource "confluent_kafka_acl" "app-connector-write-on-error-lcc-topics" {
 
 resource "confluent_kafka_acl" "app-connector-read-on-connect-lcc-group" {
   kafka_cluster {
-    id = var.kafka_cluster.id
+    id = var.kafka.cluster.id
   }
   resource_type = "GROUP"
   resource_name = "connect-lcc"
@@ -204,7 +204,7 @@ resource "confluent_kafka_acl" "app-connector-read-on-connect-lcc-group" {
   host          = "*"
   operation     = "READ"
   permission    = "ALLOW"
-  rest_endpoint = var.kafka_cluster.rest_endpoint
+  rest_endpoint = var.kafka.cluster.rest_endpoint
   credentials {
     key    = var.kafka_api_credentials.api_key_id
     secret = var.kafka_api_credentials.api_key_secret

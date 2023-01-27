@@ -6,9 +6,14 @@ output "kafka_api_credentials" {
   sensitive = true
 }
 
-output "kafka_cluster" {
+output "kafka" {
   value = {
-    id = confluent_kafka_cluster.kafka_cluster.id
-    rest_endpoint = confluent_kafka_cluster.kafka_cluster.rest_endpoint
+    environment = {
+      id = confluent_environment.datamesh_dataproducts.id
+    }
+    cluster = {
+      id = confluent_kafka_cluster.kafka_cluster.id
+      rest_endpoint = confluent_kafka_cluster.kafka_cluster.rest_endpoint
+    }
   }
 }

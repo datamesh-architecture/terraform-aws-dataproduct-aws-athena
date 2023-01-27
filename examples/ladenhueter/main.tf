@@ -25,6 +25,6 @@ module "ladenhueter" {
 
   aws                   = var.aws
   kafka_api_credentials = module.kafka_cluster.kafka_api_credentials
-  kafka_cluster         = module.kafka_cluster.kafka_cluster
+  kafka                 = module.kafka_cluster.kafka
 }
 

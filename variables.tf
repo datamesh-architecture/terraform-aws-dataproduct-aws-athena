@@ -13,10 +13,15 @@ variable "kafka_api_credentials" {
   })
 }
 
-variable "kafka_cluster" {
+variable "kafka" {
   type = object({
-    id = string
-    rest_endpoint = string
+    environment = object({
+      id = string
+    })
+    cluster = object({
+      id = string
+      rest_endpoint = string
+    })
   })
 }
 
