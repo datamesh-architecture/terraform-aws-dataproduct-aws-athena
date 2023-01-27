@@ -13,11 +13,11 @@ resource "confluent_kafka_cluster" "kafka_cluster" {
   }
 }
 
-resource "confluent_kafka_topic" "stock" {
+resource "confluent_kafka_topic" "confluent_kafka_topic" {
   kafka_cluster {
     id = confluent_kafka_cluster.kafka_cluster.id
   }
-  topic_name    = "stock"
+  topic_name    = var.topic
   rest_endpoint = confluent_kafka_cluster.kafka_cluster.rest_endpoint
   credentials {
     key    = confluent_api_key.app-manager-kafka-api-key.id

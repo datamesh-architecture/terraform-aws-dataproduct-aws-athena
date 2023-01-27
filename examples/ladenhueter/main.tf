@@ -1,7 +1,3 @@
-module "kafka_cluster" {
-  source = "./kafka_cluster"
-}
-
 module "ladenhueter" {
   source = "../.."
 
@@ -28,3 +24,8 @@ module "ladenhueter" {
   kafka                 = module.kafka_cluster.kafka
 }
 
+module "kafka_cluster" {
+  source = "./kafka_cluster"
+
+  topic = "stock_updated"
+}

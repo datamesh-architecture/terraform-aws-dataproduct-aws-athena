@@ -1,0 +1,3 @@
+variable "topic" {
+  type = string
+}
