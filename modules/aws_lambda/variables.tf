@@ -8,7 +8,6 @@ variable "product" {
       schema    = string
     })
     transform = object({
-      name      = string,
       query     = string
     }),
     output    = object({
@@ -18,8 +17,8 @@ variable "product" {
   })
 }
 
-variable "aws_athena_database_name" {}
 variable "aws_athena_workgroup_id" {}
+variable "aws_athena_data_catalog_name" {}
 
 variable "s3_bucket" {
   type = object({

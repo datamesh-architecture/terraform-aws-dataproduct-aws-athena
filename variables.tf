@@ -34,10 +34,11 @@ variable "product" {
     schedule  = string,
     input     = object({
       topic     = string,
+      /* format = string, */
+      table_name = string,
       schema    = string
     })
     transform = object({
-      name      = string,
       query     = string
     }),
     output    = object({

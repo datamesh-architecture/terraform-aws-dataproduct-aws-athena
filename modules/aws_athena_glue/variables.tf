@@ -17,6 +17,7 @@ variable "product" {
   type = object({
     fqn   = string,
     input = object({
+      topic = string
       schema = string
     })
   })

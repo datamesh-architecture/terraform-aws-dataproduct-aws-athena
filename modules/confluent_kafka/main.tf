@@ -24,11 +24,13 @@ resource "confluent_api_key" "app-consumer-kafka-api-key" {
 }
 
 resource "confluent_kafka_acl" "app-producer-write-on-topic" {
+  count = length(var.kafka_topics)
+
   kafka_cluster {
     id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.kafka_app_name}-writer"
+  resource_name = var.kafka_topics[count.index]
   pattern_type  = "LITERAL"
   principal     = "User:${confluent_service_account.app-producer.id}"
   host          = "*"
@@ -71,11 +73,13 @@ resource "confluent_api_key" "app-producer-kafka-api-key" {
 // confluent_kafka_acl.app-consumer-read-on-topic, confluent_kafka_acl.app-consumer-read-on-group.
 // https://docs.confluent.io/platform/current/kafka/authorization.html#using-acls
 resource "confluent_kafka_acl" "app-consumer-read-on-topic" {
+  count = length(var.kafka_topics)
+
   kafka_cluster {
     id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.kafka_app_name}-reader"
+  resource_name = var.kafka_topics[count.index]
   pattern_type  = "LITERAL"
   principal     = "User:${confluent_service_account.app-consumer.id}"
   host          = "*"
@@ -134,11 +138,13 @@ resource "confluent_kafka_acl" "app-connector-describe-on-cluster" {
 }
 
 resource "confluent_kafka_acl" "app-connector-read-on-target-topic" {
+  count = length(var.kafka_topics)
+
   kafka_cluster {
     id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
-  resource_name = "${var.kafka_app_name}-reader"
+  resource_name = var.kafka_topics[count.index]
   pattern_type  = "LITERAL"
   principal     = "User:${confluent_service_account.app-connector.id}"
   host          = "*"

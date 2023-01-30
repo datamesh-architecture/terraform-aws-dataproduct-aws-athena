@@ -1,20 +1,15 @@
 resource "aws_athena_workgroup" "aws_athena_workgroup" {
-  name = var.athena_workgroup_name
+  name          = var.athena_workgroup_name
+  force_destroy = true
+
   configuration {
-    enforce_workgroup_configuration    = true
+    enforce_workgroup_configuration    = false
     publish_cloudwatch_metrics_enabled = true
 
     result_configuration {
-      output_location = "s3://${var.s3_bucket.bucket}/output/"
+      output_location = "s3://${var.s3_bucket.bucket}/athena/output/"
     }
   }
-}
-
-resource "aws_athena_database" "aws_athena_database" {
-  # (Required) Name of the database to create.
-  name   = var.athena_database_name
-  # (Required) Name of S3 bucket to save the results of the query execution.
-  bucket = var.s3_bucket.bucket
 }
 
 # Attach glue based data catalog to athena
@@ -52,7 +47,7 @@ resource "aws_glue_catalog_table" "aws_glue_catalog_table_kafka" {
   }
 
   storage_descriptor {
-    location      = var.s3_bucket.id
+    location      = "s3://${var.s3_bucket.id}/topics/${var.product.input.topic}"
     input_format  = "org.apache.hadoop.mapred.TextInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
 

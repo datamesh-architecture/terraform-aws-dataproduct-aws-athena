@@ -8,8 +8,8 @@ locals {
 
   s3_bucket_name             = "${local.product_fqn}-${random_integer.suffix.result}"
 
-  glue_catalog_database_name = "${var.product.domain}-input"
-  glue_catalog_table_name    = replace(var.product.name, "-", "_")
+  glue_catalog_database_name = var.product.domain
+  glue_catalog_table_name    = replace(var.product.input.table_name, "-", "_")
 
   athena_workgroup_name      = var.product.domain
   athena_data_catalog_name   = replace(var.product.domain, "-", "_")
@@ -63,9 +63,10 @@ module "athena_glue" {
 module "lambda" {
   source = "./modules/aws_lambda"
 
-  aws_athena_database_name = module.athena_glue.aws_athena_database_name
-  aws_athena_workgroup_id  = module.athena_glue.aws_athena_workgroup_id
-  s3_bucket                = module.s3.s3_bucket
+  aws_athena_workgroup_id      = module.athena_glue.aws_athena_workgroup_id
+  aws_athena_data_catalog_name = module.athena_glue.aws_athena_data_catalog_name
+
+  s3_bucket                    = module.s3.s3_bucket
 
   product = var.product
 
