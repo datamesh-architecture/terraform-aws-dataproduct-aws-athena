@@ -1,5 +1,14 @@
+module "kafka_cluster" {
+  source = "./kafka_cluster"
+
+  topics = [ "stock" ]
+}
+
 module "ladenhueter" {
   source = "../.."
+  aws                   = var.aws
+  kafka_api_credentials = module.kafka_cluster.kafka_api_credentials
+  kafka                 = module.kafka_cluster.kafka
 
   product = {
     domain    = "fulfillment",
@@ -18,14 +27,4 @@ module "ladenhueter" {
       location  = "shelf_warmers"
     }
   }
-
-  aws                   = var.aws
-  kafka_api_credentials = module.kafka_cluster.kafka_api_credentials
-  kafka                 = module.kafka_cluster.kafka
-}
-
-module "kafka_cluster" {
-  source = "./kafka_cluster"
-
-  topic = "stock"
 }

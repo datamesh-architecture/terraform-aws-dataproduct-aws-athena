@@ -1,3 +1,3 @@
-variable "topic" {
-  type = string
+variable "topics" {
+  type = list(string)
 }

@@ -28,7 +28,7 @@ resource "confluent_kafka_acl" "app-producer-write-on-topic" {
     id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
-  resource_name = var.kafka_topics[0]
+  resource_name = "${var.kafka_app_name}-writer"
   pattern_type  = "LITERAL"
   principal     = "User:${confluent_service_account.app-producer.id}"
   host          = "*"
@@ -75,7 +75,7 @@ resource "confluent_kafka_acl" "app-consumer-read-on-topic" {
     id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
-  resource_name = var.kafka_topics[0]
+  resource_name = "${var.kafka_app_name}-reader"
   pattern_type  = "LITERAL"
   principal     = "User:${confluent_service_account.app-consumer.id}"
   host          = "*"
@@ -138,7 +138,7 @@ resource "confluent_kafka_acl" "app-connector-read-on-target-topic" {
     id = var.kafka.cluster.id
   }
   resource_type = "TOPIC"
-  resource_name = var.kafka_topics[0]
+  resource_name = "${var.kafka_app_name}-reader"
   pattern_type  = "LITERAL"
   principal     = "User:${confluent_service_account.app-connector.id}"
   host          = "*"
@@ -295,7 +295,7 @@ resource "confluent_connector" "sink" {
   // Block for custom *nonsensitive* configuration properties that are *not* labelled with "Type: password" under "Configuration Properties" section in the docs:
   // https://docs.confluent.io/cloud/current/connectors/cc-s3-sink.html#configuration-properties
   config_nonsensitive = {
-    "topics"                   = var.kafka_topics[0]
+    "topics"                   = join(", ", var.kafka_topics)
     "input.data.format"        = "JSON"
     "s3.bucket.name"           = var.s3_bucket.bucket
     "connector.class"          = "S3_SINK"
