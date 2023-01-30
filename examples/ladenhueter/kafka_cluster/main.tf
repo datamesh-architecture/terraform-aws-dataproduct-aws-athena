@@ -13,18 +13,6 @@ resource "confluent_kafka_cluster" "kafka_cluster" {
   }
 }
 
-resource "confluent_kafka_topic" "confluent_kafka_topic" {
-  kafka_cluster {
-    id = confluent_kafka_cluster.kafka_cluster.id
-  }
-  topic_name    = var.topic
-  rest_endpoint = confluent_kafka_cluster.kafka_cluster.rest_endpoint
-  credentials {
-    key    = confluent_api_key.app-manager-kafka-api-key.id
-    secret = confluent_api_key.app-manager-kafka-api-key.secret
-  }
-}
-
 resource "confluent_service_account" "app-manager" {
   display_name = "app-manager"
   description  = "Service account to manage Kafka cluster"
@@ -55,4 +43,16 @@ resource "confluent_api_key" "app-manager-kafka-api-key" {
   depends_on = [
     confluent_role_binding.app-manager-kafka-cluster-admin
   ]
+}
+
+resource "confluent_kafka_topic" "confluent_kafka_topic" {
+  kafka_cluster {
+    id = confluent_kafka_cluster.kafka_cluster.id
+  }
+  topic_name    = var.topic
+  rest_endpoint = confluent_kafka_cluster.kafka_cluster.rest_endpoint
+  credentials {
+    key    = confluent_api_key.app-manager-kafka-api-key.id
+    secret = confluent_api_key.app-manager-kafka-api-key.secret
+  }
 }

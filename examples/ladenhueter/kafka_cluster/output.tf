@@ -12,7 +12,9 @@ output "kafka" {
       id = confluent_environment.datamesh_dataproducts.id
     }
     cluster = {
-      id = confluent_kafka_cluster.kafka_cluster.id
+      id            = confluent_kafka_cluster.kafka_cluster.id
+      api_version   = confluent_kafka_cluster.kafka_cluster.api_version
+      kind          = confluent_kafka_cluster.kafka_cluster.kind
       rest_endpoint = confluent_kafka_cluster.kafka_cluster.rest_endpoint
     }
   }

@@ -27,6 +27,8 @@ variable "kafka" {
     })
     cluster = object({
       id = string
+      api_version = string
+      kind = string
       rest_endpoint = string
     })
   })

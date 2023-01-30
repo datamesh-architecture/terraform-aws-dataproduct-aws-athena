@@ -6,7 +6,7 @@ module "ladenhueter" {
     name      = "shelf_warmers",
     schedule  = "0 0 * * ? *", # Run at 00:00 am (UTC) every day
     input     = {
-      topic     = "stock_updated",
+      topic     = "stock",
       schema    = "data/stock_updated.schema.json"
     }
     transform = {
@@ -27,5 +27,5 @@ module "ladenhueter" {
 module "kafka_cluster" {
   source = "./kafka_cluster"
 
-  topic = "stock_updated"
+  topic = "stock"
 }
