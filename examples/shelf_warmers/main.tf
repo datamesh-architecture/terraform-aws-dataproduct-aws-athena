@@ -10,22 +10,25 @@ module "shelf_warmers" {
   kafka_api_credentials = module.kafka_cluster.kafka_api_credentials
   kafka                 = module.kafka_cluster.kafka
 
-  product = {
-    domain    = "fulfillment",
-    name      = "shelf_warmers",
-    schedule  = "0 0 * * ? *", # Run at 00:00 am (UTC) every day
-    input     = {
+  domain    = "fulfillment"
+  name      = "shelf_warmers"
+  schedule  = "0 0 * * ? *" # Run at 00:00 am (UTC) every day
+
+  input     = [
+    {
       topic     = "stock",
       /* format    = "JSON",*/
       table_name = "stock_updated"
       schema    = "schema/stock_updated.schema.json"
     }
-    transform = {
-      query     = "sql/transform.sql"
-    },
-    output    = {
-      format    = "PARQUET",
-      location  = "shelf_warmers"
-    }
+  ]
+
+  transform = {
+    query     = "sql/transform.sql"
+  }
+
+  output    = {
+    format    = "PARQUET",
+    location  = "shelf_warmers"
   }
 }

@@ -27,42 +27,43 @@ variable "kafka" {
   })
 }
 
-variable "product" {
+variable "domain" {
+  type = string
+  description = "The domain of the data product"
+}
+
+variable "name" {
+  type = string
+  description = "The name of the data product"
+}
+
+variable "schedule" {
+  type = string
+  description = "The schedule expression to pass to the EventBridge event rule. Format: Minutes | Hours | Day of month | Month | Day of week | Year"
+  default = ""
+}
+
+variable "input" {
+  type = list(object({
+    topic      = string
+    /* format = string, */
+    table_name = string
+    schema     = string
+  }))
+  description = ""
+}
+
+variable "transform" {
   type = object({
-    domain    = string,
-    name      = string,
-    schedule  = string,
-    input     = object({
-      topic     = string,
-      /* format = string, */
-      table_name = string,
-      schema    = string
-    })
-    transform = object({
-      query     = string
-    }),
-    output    = object({
-      format    = string,
-      location  = string
-    })
+    query = string
   })
-  description = <<EOT
-    product = {
-      domain    = "The corresponding domain name of the data product"
-      name      = "The name of the data product"
-      schedule  = "The schedule expression to pass to the EventBridge event rule. Format: Minutes | Hours | Day of month | Month | Day of week | Year"
-      input     = {
-        topic     = ""
-        schema    = ""
-      }
-      transform = {
-        name      = ""
-        query     = ""
-      }
-      output    = {
-        format    = ""
-        location  = ""
-      }
-    }
-  EOT
+  description = ""
+}
+
+variable "output" {
+  type = object({
+    format    = string
+    location  = string
+  })
+  description = ""
 }

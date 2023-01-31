@@ -21,5 +21,7 @@ Response 200 OK
 
 ```
 {
-    
+    "domain": "fulfillment",
+    "name": "shelf_warmers",
+    "output": "s3://fulfillment-shelf-warmers-46983/output/data/"
 }

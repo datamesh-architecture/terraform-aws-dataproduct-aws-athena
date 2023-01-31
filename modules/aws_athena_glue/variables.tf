@@ -1,5 +1,4 @@
 variable "glue_catalog_database_name" {}
-variable "glue_catalog_table_name" {}
 
 variable "athena_data_catalog_name" {}
 variable "athena_database_name" {}
@@ -16,9 +15,10 @@ variable "s3_bucket" {
 variable "product" {
   type = object({
     fqn   = string,
-    input = object({
+    input = list(object({
       topic = string
+      table_name = string
       schema = string
-    })
+    }))
   })
 }

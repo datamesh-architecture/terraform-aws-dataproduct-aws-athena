@@ -3,10 +3,6 @@ variable "product" {
     domain    = string,
     name      = string,
     schedule  = string,
-    input     = object({
-      topic     = string,
-      schema    = string
-    })
     transform = object({
       query     = string
     }),
@@ -17,8 +13,16 @@ variable "product" {
   })
 }
 
-variable "aws_athena_workgroup_id" {}
-variable "aws_athena_data_catalog_name" {}
+variable "athena" {
+  type = object({
+    workgroup = object({
+      id = string
+    })
+    data_catalog = object({
+      name = string
+    })
+  })
+}
 
 variable "s3_bucket" {
   type = object({

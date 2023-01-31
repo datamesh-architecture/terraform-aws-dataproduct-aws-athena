@@ -24,8 +24,8 @@ resource "local_file" "lambda_to_s3" {
   content = templatefile("${path.module}/templates/transform.py.tftpl", {
     name             = "query_${var.product.domain}_${var.product.name}"
     glue_database    = var.product.domain
-    athena_workgroup = var.aws_athena_workgroup_id
-    athena_catalog   = var.aws_athena_data_catalog_name
+    athena_workgroup = var.athena.workgroup.id
+    athena_catalog   = var.athena.data_catalog.name
   })
   filename = "${local.transform_out_directory}/lambda_function.py"
 }

@@ -28,16 +28,20 @@ resource "aws_glue_catalog_database" "aws_glue_catalog_database" {
 }
 
 resource "aws_glue_schema" "aws_glue_schema" {
+  count = length(var.product.input)
+
   compatibility     = "DISABLED"
   data_format       = "JSON"
-  schema_name       = "schema_${var.product.fqn}"
-  schema_definition = file("${path.cwd}/${var.product.input.schema}")
+  schema_name       = "schema_${var.product.fqn}_${var.product.input[count.index].topic}"
+  schema_definition = file("${path.cwd}/${var.product.input[count.index].schema}")
 }
 
 resource "aws_glue_catalog_table" "aws_glue_catalog_table_kafka" {
+  count = length(var.product.input)
+
   database_name = aws_glue_catalog_database.aws_glue_catalog_database.name
   catalog_id    = aws_glue_catalog_database.aws_glue_catalog_database.catalog_id
-  name          = var.glue_catalog_table_name
+  name          = replace(var.product.input[count.index].table_name, "-", "_")
   description   = "Glue catalog table"
   table_type    = "EXTERNAL_TABLE"
 
@@ -47,7 +51,7 @@ resource "aws_glue_catalog_table" "aws_glue_catalog_table_kafka" {
   }
 
   storage_descriptor {
-    location      = "s3://${var.s3_bucket.id}/topics/${var.product.input.topic}"
+    location      = "s3://${var.s3_bucket.id}/topics/${var.product.input[count.index].topic}"
     input_format  = "org.apache.hadoop.mapred.TextInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
 
@@ -56,9 +60,9 @@ resource "aws_glue_catalog_table" "aws_glue_catalog_table_kafka" {
     }
 
     schema_reference {
-      schema_version_number = aws_glue_schema.aws_glue_schema.latest_schema_version
+      schema_version_number = aws_glue_schema.aws_glue_schema[count.index].latest_schema_version
       schema_id {
-        schema_arn = aws_glue_schema.aws_glue_schema.arn
+        schema_arn = aws_glue_schema.aws_glue_schema[count.index].arn
       }
     }
   }
