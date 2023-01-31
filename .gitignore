@@ -31,4 +31,4 @@ override.tf.json
 
 .idea
 examples/**/terraform.tfvars
-output
+out*
