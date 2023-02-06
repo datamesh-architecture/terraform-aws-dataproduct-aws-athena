@@ -4,9 +4,5 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.0"
     }
-    confluent = {
-      source  = "confluentinc/confluent"
-      version = "1.24.0"
-    }
   }
 }

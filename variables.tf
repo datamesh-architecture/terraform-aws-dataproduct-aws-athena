@@ -6,23 +6,13 @@ variable "aws" {
   })
 }
 
-variable "kafka_api_credentials" {
+variable "aws_athena" {
   type = object({
-    api_key_id = string
-    api_key_secret = string
-  })
-}
-
-variable "kafka" {
-  type = object({
-    environment = object({
+    workgroup = object({
       id = string
     })
-    cluster = object({
-      id = string
-      api_version = string
-      kind = string
-      rest_endpoint = string
+    data_catalog = object({
+      name = string
     })
   })
 }
@@ -45,8 +35,8 @@ variable "schedule" {
 
 variable "input" {
   type = list(object({
-    topic      = string
-    /* format = string, */
+    source     = string
+    format     = string
     table_name = string
     schema     = string
   }))
