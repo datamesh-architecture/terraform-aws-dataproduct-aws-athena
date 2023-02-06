@@ -7,11 +7,13 @@
 
 ## Backlog
 
- * HTTP data product endpoint
  * Support multiple inputs (from S3, from existing data product, ...)
  * Kafka Connector as separate (independent) repository (t.b.d.)
  * Console I/O for reading passwords (use Terraform state)
  * Password console output as public key
+ * Pre- and post-conditions
+ * Guarantees for output data
+ * Define roles / permissions for output data
 
 ## Data Product endpoint
 
