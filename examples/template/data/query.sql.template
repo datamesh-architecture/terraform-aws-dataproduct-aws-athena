@@ -1,2 +1,0 @@
-with input as (SELECT * from "<source_table_name>"),
-    -- Start writing your query here
