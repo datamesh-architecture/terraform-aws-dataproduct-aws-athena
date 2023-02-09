@@ -5,7 +5,7 @@ module "kafka_cluster" {
 }
 
 module "shelf_warmers" {
-  source = "../.."
+  source = "https://github.com/datamesh-architecture/terraform-datamesh-dataproduct-aws-athena"
   aws                   = var.aws
   kafka_api_credentials = module.kafka_cluster.kafka_api_credentials
   kafka                 = module.kafka_cluster.kafka
