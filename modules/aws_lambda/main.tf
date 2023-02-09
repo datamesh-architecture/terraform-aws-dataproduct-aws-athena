@@ -8,6 +8,16 @@ locals {
   info_out_archive         = "archive_${var.product.domain}_${var.product.name}-info.zip"
 
   out_directory            = "${path.root}/out_archives"
+
+  product_input = jsondecode(data.http.input.response_body)
+}
+
+data "http" "input" {
+  url = var.product.input[0].source
+
+  request_headers = {
+    Accept = "application/json"
+  }
 }
 
 resource "local_file" "query_to_s3" {
@@ -23,9 +33,11 @@ resource "local_file" "query_to_s3" {
 resource "local_file" "lambda_to_s3" {
   content = templatefile("${path.module}/templates/transform.py.tftpl", {
     name             = "query_${var.product.domain}_${var.product.name}"
-    glue_database    = var.product.domain
-    athena_workgroup = var.athena.workgroup.id
-    athena_catalog   = var.athena.data_catalog.name
+
+    athena_output    = "s3://${var.s3_bucket.bucket}/athena/"
+    athena_workgroup = local.product_input.athena.workgroup
+    athena_catalog   = local.product_input.athena.catalog
+    glue_database    = local.product_input.glue.database
   })
   filename = "${local.transform_out_directory}/lambda_function.py"
 }
@@ -73,6 +85,8 @@ data "aws_iam_policy_document" "allow_s3" {
     resources = [
       var.s3_bucket.arn,
       "${var.s3_bucket.arn}/*",
+      local.product_input.location,
+      "${local.product_input.location}/*",
     ]
   }
 }
@@ -116,7 +130,7 @@ data "aws_iam_policy_document" "allow_glue" {
 }
 
 resource "aws_iam_role" "lambda_execution_role" {
-  name = "s3-lambda-execution-role"
+  name = "s3-lambda-execution-role-${var.product.domain}-${var.product.name}"
 
   assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
 }

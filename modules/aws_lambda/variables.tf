@@ -3,23 +3,15 @@ variable "product" {
     domain    = string,
     name      = string,
     schedule  = string,
+    input     = list(object({
+      source    = string
+    }))
     transform = object({
       query     = string
     }),
     output    = object({
       format    = string,
       location  = string
-    })
-  })
-}
-
-variable "athena" {
-  type = object({
-    workgroup = object({
-      id = string
-    })
-    data_catalog = object({
-      name = string
     })
   })
 }

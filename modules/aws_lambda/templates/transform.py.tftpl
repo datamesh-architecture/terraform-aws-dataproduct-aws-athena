@@ -3,12 +3,11 @@ import boto3
 with open('${name}.sql', 'r') as file:
     query = file.read()
 
-# Database to execute the query against
-glue_database = '${glue_database}'
-
+athena_output = '${athena_output}'
+athena_workgroup = '${athena_workgroup}'
 athena_catalog = '${athena_catalog}'
 
-athena_workgroup = '${athena_workgroup}'
+glue_database = '${glue_database}'
 
 def lambda_handler(event, context):
     # Initiate the Boto3 Client
@@ -21,7 +20,10 @@ def lambda_handler(event, context):
             'Database': glue_database,
             'Catalog': athena_catalog
         },
-        WorkGroup=athena_workgroup
+        WorkGroup=athena_workgroup,
+        ResultConfiguration={
+            'OutputLocation': athena_output
+        }
     )
 
     # Return response after starting the query execution

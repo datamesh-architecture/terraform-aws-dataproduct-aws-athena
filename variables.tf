@@ -6,17 +6,6 @@ variable "aws" {
   })
 }
 
-variable "aws_athena" {
-  type = object({
-    workgroup = object({
-      id = string
-    })
-    data_catalog = object({
-      name = string
-    })
-  })
-}
-
 variable "domain" {
   type = string
   description = "The domain of the data product"
@@ -36,9 +25,6 @@ variable "schedule" {
 variable "input" {
   type = list(object({
     source     = string
-    format     = string
-    table_name = string
-    schema     = string
   }))
   description = ""
 }
