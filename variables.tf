@@ -26,20 +26,21 @@ variable "input" {
   type = list(object({
     source     = string
   }))
-  description = ""
+  description = "List of URIs to the HTTPS endpoints of existing data products, which should be used as input"
 }
 
 variable "transform" {
   type = object({
     query = string
   })
-  description = ""
+  description = "Path to a SQL file, which should be used to transform the input data"
 }
 
 variable "output" {
   type = object({
     format    = string
-    location  = string
   })
-  description = ""
+  description = <<EOT
+format: Output format of this data product (e.g. PARQUET)
+EOT
 }
