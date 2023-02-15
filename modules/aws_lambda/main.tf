@@ -35,9 +35,9 @@ resource "local_file" "lambda_to_s3" {
     name             = "query_${var.product.domain}_${var.product.name}"
 
     athena_output    = "s3://${var.s3_bucket.bucket}/athena/"
-    athena_workgroup = local.product_input.athena.workgroup
-    athena_catalog   = local.product_input.athena.catalog
-    glue_database    = local.product_input.glue.database
+    athena_workgroup = local.product_input.output.athena_workgroup
+    athena_catalog   = local.product_input.output.athena_catalog
+    glue_database    = local.product_input.output.glue_database
   })
   filename = "${local.transform_out_directory}/lambda_function.py"
 }
@@ -85,8 +85,8 @@ data "aws_iam_policy_document" "allow_s3" {
     resources = [
       var.s3_bucket.arn,
       "${var.s3_bucket.arn}/*",
-      local.product_input.location,
-      "${local.product_input.location}/*",
+      local.product_input.output.location, // TODO inverse control
+      "${local.product_input.output.location}/*", // TODO inverse control
     ]
   }
 }
