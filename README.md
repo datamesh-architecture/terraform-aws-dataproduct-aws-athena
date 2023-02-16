@@ -1,29 +1,64 @@
-# terraform-datamesh-dataproduct-aws-athena
+# Data Mesh Terraform module "AWS Athena"
 
-## Constraints
+This Terraform module provisions the necessary services to provide a data product on AWS.
 
- * Read from one Kafka topic with exactly one message format
- * One SQL file as transformation
+![](assets/images/overview.png)
 
-## Backlog
+## Services
 
- * Support multiple inputs (from S3, from existing data product, ...)
- * Kafka Connector as separate (independent) repository (t.b.d.)
- * Console I/O for reading passwords (use Terraform state)
- * Password console output as public key
- * Pre- and post-conditions
- * Guarantees for output data
- * Define roles / permissions for output data
+* AWS S3
+* AWS Athena
+* AWS Glue
+* AWS Lambda
 
-## Data Product endpoint
-
-GET https://example.com/dataproducts/shelf_warmers/
-
-Response 200 OK
+## Usage
 
 ```
-{
-    "domain": "fulfillment",
-    "name": "shelf_warmers",
-    "output": "s3://fulfillment-shelf-warmers-46983/output/data/"
+module my_data_product {
+  source = "git@github.com:datamesh-architecture/terraform-datamesh-dataproduct-aws-athena.git"
+
+  domain   = "<data_product_domain>"
+  name     = "<data_product_name>"
+  schedule = "0 0 * * ? *" # Run at 00:00 am (UTC) every day
+
+  input = [
+    {
+      source = "<data_product_endpoint>"
+    }
+  ]
+
+  transform = {
+    query = "sql/<name_of_the_transform>.sql"
+  }
+
+  output = {
+    format   = "<format>"
+  }
 }
+
+```
+
+## Examples
+
+Examples, how to use this module, can be found in a separate [GitHub repository](https://github.com/datamesh-architecture/terraform-datamesh-dataproduct-examples).
+
+## Requirements
+
+| Name                                                                      | Version    |
+|---------------------------------------------------------------------------|------------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.7   |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws)                   | >= 4.0     |
+
+## Providers
+
+| Name                                                                | Version   |
+|---------------------------------------------------------------------|-----------|
+| <a name="provider_aws"></a> [aws](#provider\_aws)                   | >= 4.0    |
+
+## Authors
+
+Module is maintained by []().
+
+## License
+
+MIT License Licensed. See [LICENSE](https://github.com/datamesh-architecture/terraform-datamesh-dataproduct-aws-athena/blob/main/LICENSE) for full details.
