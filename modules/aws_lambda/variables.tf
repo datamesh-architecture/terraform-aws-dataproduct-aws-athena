@@ -10,8 +10,7 @@ variable "product" {
       query     = string
     }),
     output    = object({
-      format    = string,
-      location  = string
+      format    = string
     })
   })
 }

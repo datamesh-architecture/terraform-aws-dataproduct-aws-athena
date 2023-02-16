@@ -71,22 +71,33 @@ data "aws_iam_policy_document" "lambda_assume" {
   }
 }
 
+data "aws_iam_policy_document" "allow_s3_input" {
+  statement {
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      local.product_input.output.location,
+      "${local.product_input.output.location}/*"
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "allow_s3" {
   statement {
     actions = [
-      "s3:ListBucket",
       "s3:GetBucketLocation",
-      "s3:GetObject*",
-      "s3:GetEncryptionConfiguration",
+      "s3:GetObject",
+      "s3:ListBucket",
       "s3:PutObject",
-      "s3:PutEncryptionConfiguration",
     ]
 
     resources = [
       var.s3_bucket.arn,
-      "${var.s3_bucket.arn}/*",
-      local.product_input.output.location, // TODO inverse control
-      "${local.product_input.output.location}/*", // TODO inverse control
+      "${var.s3_bucket.arn}/*"
     ]
   }
 }
@@ -106,7 +117,8 @@ data "aws_iam_policy_document" "allow_logging" {
 data "aws_iam_policy_document" "allow_athena" {
   statement {
     actions = [
-      "athena:*"
+      "athena:GetDataCatalog",
+      "athena:StartQueryExecution"
     ]
     resources = [
       "*" // ToDo
@@ -117,11 +129,10 @@ data "aws_iam_policy_document" "allow_athena" {
 data "aws_iam_policy_document" "allow_glue" {
   statement {
     actions = [
-      "glue:*" // ToDo
-      //"glue:GetDatabase",
-      //"glue:GetTable",
-      //"glue:ListSchemas",
-      //"glue:CreateTable"
+      "glue:CreateTable",
+      "glue:GetDatabase",
+      "glue:GetSchemaVersion",
+      "glue:GetTable"
     ]
     resources = [
       "*" // ToDo
@@ -138,6 +149,12 @@ resource "aws_iam_role" "lambda_execution_role" {
 resource "aws_iam_role_policy" "lambda_s3" {
   name   = "lambda-execution-s3-policy"
   policy = data.aws_iam_policy_document.allow_s3.json
+  role   = aws_iam_role.lambda_execution_role.id
+}
+
+resource "aws_iam_role_policy" "lambda_s3_input" {
+  name   = "lambda-execution-s3-input-policy"
+  policy = data.aws_iam_policy_document.allow_s3_input.json
   role   = aws_iam_role.lambda_execution_role.id
 }
 
@@ -206,7 +223,9 @@ resource "local_file" "lambda_info_to_s3" {
     response_message = jsonencode({
       domain = var.product.domain
       name   = var.product.name
-      output = "s3://${var.s3_bucket.bucket}/output/data/"
+      output = {
+        location = "${var.s3_bucket.arn}/output/data/"
+      }
     })
   })
   filename = "${local.info_out_directory}/lambda_function.js"
