@@ -13,7 +13,7 @@ This Terraform module provisions the necessary services to provide a data produc
 
 ## Usage
 
-```
+```hcl
 module my_data_product {
   source = "git@github.com:datamesh-architecture/terraform-datamesh-dataproduct-aws-athena.git"
 
@@ -35,7 +35,20 @@ module my_data_product {
     format   = "<format>"
   }
 }
+```
 
+## Endpoint data
+
+The module creates an RESTful endpoint via AWS lambda (e.g. https://3jopsshxxc.execute-api.eu-central-1.amazonaws.com/prod/). This endpoint can be used as an input for another data product or to retrieve information about this data product.
+
+```json
+{
+  "domain": "<data_product_domain>",
+  "name": "<data_product_name>",
+  "output": {
+    "location": "arn:aws:s3:::<s3_bucket_name>/output/data/"
+  }
+}
 ```
 
 ## Examples
