@@ -1,4 +1,4 @@
-# Data Mesh Terraform module "AWS Athena"
+# terraform-dataproduct-aws-athena
 
 This Terraform module provisions the necessary services to provide a data product on AWS.
 
@@ -15,7 +15,7 @@ This Terraform module provisions the necessary services to provide a data produc
 
 ```hcl
 module my_data_product {
-  source = "git@github.com:datamesh-architecture/terraform-datamesh-dataproduct-aws-athena.git"
+  source = "git@github.com:datamesh-architecture/terraform-dataproduct-aws-athena.git"
 
   domain   = "<data_product_domain>"
   name     = "<data_product_name>"
