@@ -38,9 +38,11 @@ variable "transform" {
 
 variable "output" {
   type = object({
-    format    = string
+    format     = string
+    schema     = string
   })
   description = <<EOT
 format: Output format of this data product (e.g. PARQUET)
+schema: Schema of the output data of this data product
 EOT
 }

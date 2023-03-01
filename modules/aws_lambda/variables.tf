@@ -10,6 +10,7 @@ variable "product" {
       query     = string
     }),
     output    = object({
+      schema    = string
       format    = string
     })
   })
@@ -20,5 +21,19 @@ variable "s3_bucket" {
     bucket = string,
     id     = string,
     arn    = string
+  })
+}
+
+variable "athena" {
+  type = object({
+    data_catalog_name = string,
+    workgroup_name    = string
+  })
+}
+
+variable "glue" {
+  type = object({
+    database_name = string,
+    table_name    = string
   })
 }

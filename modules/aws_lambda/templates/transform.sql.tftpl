@@ -1,7 +1,2 @@
-CREATE TABLE ${name}
-WITH (
-    external_location = '${location}',
-    format = '${format}')
-AS (
-    ${query}
-)
+INSERT INTO "${database}"."${name}"
+${query}

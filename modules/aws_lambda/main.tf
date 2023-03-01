@@ -8,23 +8,14 @@ locals {
   info_out_archive         = "archive_${var.product.domain}_${var.product.name}-info.zip"
 
   out_directory            = "${path.root}/out_archives"
-
-  product_input = jsondecode(data.http.input.response_body)
-}
-
-data "http" "input" {
-  url = var.product.input[0].source
-
-  request_headers = {
-    Accept = "application/json"
-  }
 }
 
 resource "local_file" "query_to_s3" {
   content = templatefile("${path.module}/templates/transform.sql.tftpl", {
-    name     = var.product.name
     location = "s3://${var.s3_bucket.bucket}/output/data/"
     format   = var.product.output.format
+    database = var.glue.database_name
+    name     = var.glue.table_name
     query    = file("${path.cwd}/${var.product.transform.query}")
   })
   filename = "${local.transform_out_directory}/query_${var.product.domain}_${var.product.name}.sql"
@@ -35,9 +26,9 @@ resource "local_file" "lambda_to_s3" {
     name             = "query_${var.product.domain}_${var.product.name}"
 
     athena_output    = "s3://${var.s3_bucket.bucket}/athena/"
-    athena_workgroup = local.product_input.output.athena_workgroup
-    athena_catalog   = local.product_input.output.athena_catalog
-    glue_database    = local.product_input.output.glue_database
+    athena_catalog   = var.athena.data_catalog_name
+    athena_workgroup = var.athena.workgroup_name
+    glue_database    = var.glue.database_name
   })
   filename = "${local.transform_out_directory}/lambda_function.py"
 }
@@ -80,8 +71,8 @@ data "aws_iam_policy_document" "allow_s3_input" {
     ]
 
     resources = [
-      local.product_input.output.location,
-      "${local.product_input.output.location}/*"
+      var.product.input[0].source,
+      "${var.product.input[0].source}/*"
     ]
   }
 }
