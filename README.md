@@ -19,6 +19,7 @@ module my_data_product {
 
   domain   = "<data_product_domain>"
   name     = "<data_product_name>"
+  
   schedule = "0 0 * * ? *" # Run at 00:00 am (UTC) every day
 
   input = [
