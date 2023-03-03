@@ -70,7 +70,7 @@ See [examples repository](https://github.com/datamesh-architecture/terraform-dat
 
 ## Authors
 
-Examples are maintained by [Andre Deuerling](https://www.innoq.com/en/staff/andre-deuerling/), [Jochen Christ](https://www.innoq.com/en/staff/jochen-christ/), and [Simon Harrer](https://www.innoq.com/en/staff/dr-simon-harrer/).
+This terraform module is maintained by [Andre Deuerling](https://www.innoq.com/en/staff/andre-deuerling/), [Jochen Christ](https://www.innoq.com/en/staff/jochen-christ/), and [Simon Harrer](https://www.innoq.com/en/staff/dr-simon-harrer/).
 
 ## License
 
