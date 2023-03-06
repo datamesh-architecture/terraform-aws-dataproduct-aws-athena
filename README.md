@@ -2,7 +2,7 @@
 
 This open source Terraform module provisions the necessary services to provide a data product on AWS.
 
-![Overview](https://www.datamesh-architecture.com/images/terraform-dataproduct-aws-athena.svg)
+![Overview](https://www.datamesh-architecture.com/images/terraform-dataproduct-aws-athena.png)
 
 ## Services
 
