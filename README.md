@@ -2,7 +2,7 @@
 
 This open source Terraform module provisions the necessary services to provide a data product on AWS.
 
-![Overview](assets/images/overview.png)
+![Overview](https://www.datamesh-architecture.com/images/terraform-dataproduct-aws-athena.svg)
 
 ## Services
 
@@ -24,7 +24,7 @@ module my_data_product {
 
   input = [
     {
-      source = "<data_product_endpoint>"
+      source = "<existing_s3_bucket>"
     }
   ]
 
