@@ -1,6 +1,6 @@
 # terraform-dataproduct-aws-athena
 
-This Terraform module provisions the necessary services to provide a data product on AWS.
+This open source Terraform module provisions the necessary services to provide a data product on AWS.
 
 ![Overview](assets/images/overview.png)
 
@@ -19,6 +19,7 @@ module my_data_product {
 
   domain   = "<data_product_domain>"
   name     = "<data_product_name>"
+  
   schedule = "0 0 * * ? *" # Run at 00:00 am (UTC) every day
 
   input = [
@@ -53,7 +54,7 @@ The module creates an RESTful endpoint via AWS lambda (e.g. https://3jopsshxxc.e
 
 ## Examples
 
-Examples, how to use this module, can be found in a separate [GitHub repository](https://github.com/datamesh-architecture/terraform-datamesh-dataproduct-examples).
+See [examples repository](https://github.com/datamesh-architecture/terraform-dataproduct-examples).
 
 ## Requirements
 
@@ -70,8 +71,8 @@ Examples, how to use this module, can be found in a separate [GitHub repository]
 
 ## Authors
 
-Module is maintained by []().
+This terraform module is maintained by [Andre Deuerling](https://www.innoq.com/en/staff/andre-deuerling/), [Jochen Christ](https://www.innoq.com/en/staff/jochen-christ/), and [Simon Harrer](https://www.innoq.com/en/staff/dr-simon-harrer/).
 
 ## License
 
-MIT License Licensed. See [LICENSE](https://github.com/datamesh-architecture/terraform-datamesh-dataproduct-aws-athena/blob/main/LICENSE) for full details.
+MIT License.
