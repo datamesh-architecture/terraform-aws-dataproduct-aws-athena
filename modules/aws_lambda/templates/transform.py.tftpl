@@ -4,8 +4,6 @@ with open('${name}.sql', 'r') as file:
     query = file.read()
 
 athena_output = '${athena_output}'
-athena_workgroup = '${athena_workgroup}'
-athena_catalog = '${athena_catalog}'
 
 glue_database = '${glue_database}'
 
@@ -17,10 +15,8 @@ def lambda_handler(event, context):
     response = client.start_query_execution(
         QueryString=query,
         QueryExecutionContext={
-            'Database': glue_database,
-            'Catalog': athena_catalog
+            'Database': glue_database
         },
-        WorkGroup=athena_workgroup,
         ResultConfiguration={
             'OutputLocation': athena_output
         }

@@ -26,8 +26,6 @@ resource "local_file" "lambda_to_s3" {
     name             = "query_${var.product.domain}_${var.product.name}"
 
     athena_output    = "s3://${var.s3_bucket.bucket}/athena/"
-    athena_catalog   = var.athena.data_catalog_name
-    athena_workgroup = var.athena.workgroup_name
     glue_database    = var.glue.database_name
   })
   filename = "${local.transform_out_directory}/lambda_function.py"

@@ -24,13 +24,6 @@ variable "s3_bucket" {
   })
 }
 
-variable "athena" {
-  type = object({
-    data_catalog_name = string,
-    workgroup_name    = string
-  })
-}
-
 variable "glue" {
   type = object({
     database_name = string,

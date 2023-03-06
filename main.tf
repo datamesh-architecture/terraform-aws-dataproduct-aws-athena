@@ -31,10 +31,6 @@ module "aws_lambda" {
   source = "./modules/aws_lambda"
 
   s3_bucket     = module.aws_s3.s3_bucket
-  athena        = {
-    data_catalog_name = module.aws_athena_glue.aws_athena_data_catalog_name
-    workgroup_name    = module.aws_athena_glue.aws_athena_workgroup_name
-  }
   glue = {
     database_name = module.aws_athena_glue.aws_glue_database_name
     table_name    = module.aws_athena_glue.aws_glue_catalog_table_name
