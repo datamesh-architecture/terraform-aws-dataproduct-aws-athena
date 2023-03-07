@@ -4,6 +4,7 @@ variable "aws" {
     access_key = string
     secret_key = string
   })
+  description = "AWS related information and credentials"
 }
 
 variable "domain" {
@@ -26,7 +27,7 @@ variable "input" {
   type = list(object({
     source     = string
   }))
-  description = "List of URIs to the HTTPS endpoints of existing data products, which should be used as input"
+  description = "List of S3 buckets of other data products which should be used as input"
 }
 
 variable "transform" {
@@ -43,6 +44,6 @@ variable "output" {
   })
   description = <<EOT
 format: Output format of this data product (e.g. PARQUET)
-schema: Schema of the output data of this data product
+schema: Path to the JSON schema file which describes the output of this data product
 EOT
 }
