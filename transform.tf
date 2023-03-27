@@ -121,7 +121,8 @@ data "aws_iam_policy_document" "allow_glue" {
       "glue:CreateTable",
       "glue:GetDatabase",
       "glue:GetSchemaVersion",
-      "glue:GetTable"
+      "glue:GetTable",
+      "glue:GetPartitions"
     ]
     resources = [
       "*" // ToDo
