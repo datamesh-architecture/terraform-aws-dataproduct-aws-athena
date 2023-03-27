@@ -38,6 +38,18 @@ module my_data_product {
 }
 ```
 
+Additionally, it's necessary to configure credentials for AWS. This can be done in a separate file `terraform.tfvars` with the following content:
+
+```hcl
+aws = {
+  region = "REGION"
+  access_key = "ACCESS_KEY"
+  secret_key = "SECRET_KEY"
+}
+```
+
+The specified credentials can then be referenced and forwarded in the other *.tf files.
+
 ## Endpoint data
 
 The module creates an RESTful endpoint via AWS lambda (e.g. https://3jopsshxxc.execute-api.eu-central-1.amazonaws.com/prod/). This endpoint can be used as an input for another data product or to retrieve information about this data product.
