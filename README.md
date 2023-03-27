@@ -29,11 +29,12 @@ module my_data_product {
   ]
 
   transform = {
-    query = "sql/<name_of_the_transform>.sql"
+    query    = "sql/<name_of_the_transform>.sql"
   }
 
   output = {
     format   = "<format>"
+    schema   = "schema/<name_of_the_schema>.schema.json"
   }
 }
 ```
