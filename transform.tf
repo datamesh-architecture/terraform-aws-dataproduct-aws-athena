@@ -130,6 +130,17 @@ data "aws_iam_policy_document" "allow_glue" {
   }
 }
 
+data "aws_iam_policy_document" "allow_kms" {
+  statement {
+    actions = [
+      "kms:GenerateDataKey"
+    ]
+    resources = [
+      "*" // ToDo
+    ]
+  }
+}
+
 resource "aws_iam_role" "lambda_execution_role" {
   name = "s3-lambda-execution-role-${local.product.domain}-${local.product.name}"
 
@@ -165,6 +176,13 @@ resource "aws_iam_role_policy" "lambda_glue" {
   role   = aws_iam_role.lambda_execution_role.id
   policy = data.aws_iam_policy_document.allow_glue.json
 }
+
+resource "aws_iam_role_policy" "lambda_kms" {
+  name   = "lambda-execution-kms-policy"
+  role   = aws_iam_role.lambda_execution_role.id
+  policy = data.aws_iam_policy_document.allow_kms.json
+}
+
 
 resource "aws_lambda_function" "aws_lambda_function" {
   function_name     = local.aws_lambda_function_name
