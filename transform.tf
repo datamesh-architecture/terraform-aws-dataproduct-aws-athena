@@ -133,7 +133,9 @@ data "aws_iam_policy_document" "allow_glue" {
 data "aws_iam_policy_document" "allow_kms" {
   statement {
     actions = [
-      "kms:GenerateDataKey"
+      "kms:GenerateDataKey",
+      "kms:Decrypt",
+      "kms:Encrypt"
     ]
     resources = [
       "*" // ToDo
